@@ -12,10 +12,11 @@ const PORT = process.env.PORT || 3000;
 // 交易所图标定义
 const binanceSvg = `<svg width="48" height="48" viewBox="0 0 126.61 126.61" xmlns="http://www.w3.org/2000/svg"><g fill="#f3ba2f"><path d="m38.73 53.2 24.59-24.58 24.6 24.6 14.3-14.31-38.9-38.91-38.9 38.9z"/><path d="m0 63.31 14.3-14.31 14.31 14.31-14.31 14.3z"/><path d="m38.73 73.41 24.59 24.59 24.6-24.6 14.31 14.29-38.9 38.91-38.91-38.88z"/><path d="m98 63.31 14.3-14.31 14.31 14.3-14.31 14.32z"/><path d="m77.83 63.3-14.51-14.52-10.73 10.73-1.24 1.23-2.54 2.54 14.51 14.5 14.51-14.47z"/></g></svg>`;
 
+const okxSvg = `<svg xmlns:xodm="http://www.corel.com/coreldraw/odm/2003" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 2500 2500" style="enable-background:new 0 0 2500 2500;" xml:space="preserve"><style type="text/css">.st0{fill:none;}</style><g id="Layer_x0020_1"><g id="_2187289728928"><rect y="0" class="st0" width="2500" height="2500"></rect><g><path d="M1464.3,1015.3h-405.2c-17.2,0-31.3,14.1-31.3,31.3v405.2c0,17.2,14.1,31.3,31.3,31.3h405.2c17.2,0,31.3-14.1,31.3-31.3     v-405.2C1495.6,1029.4,1481.5,1015.3,1464.3,1015.3z"></path><path d="M996.6,549.1H591.4c-17.2,0-31.3,14.1-31.3,31.3v405.2c0,17.2,14.1,31.3,31.3,31.3h405.2c17.2,0,31.3-14.1,31.3-31.3     V580.4C1027.8,563.2,1013.8,549.1,996.6,549.1z"></path><path d="M1930.5,549.1h-405.2c-17.2,0-31.3,14.1-31.3,31.3v405.2c0,17.2,14.1,31.3,31.3,31.3h405.2c17.2,0,31.3-14.1,31.3-31.3     V580.4C1961.8,563.2,1947.7,549.1,1930.5,549.1z"></path><path d="M996.6,1481.5H591.4c-17.2,0-31.3,14.1-31.3,31.3V1918c0,17.2,14.1,31.3,31.3,31.3h405.2c17.2,0,31.3-14.1,31.3-31.3     v-405.2C1027.8,1495.6,1013.8,1481.5,996.6,1481.5z"></path><path d="M1930.5,1481.5h-405.2c-17.2,0-31.3,14.1-31.3,31.3V1918c0,17.2,14.1,31.3,31.3,31.3h405.2c17.2,0,31.3-14.1,31.3-31.3     v-405.2C1961.8,1495.6,1947.7,1481.5,1930.5,1481.5z"></path></g></g></g></svg>`;
+
 const gateioSvg = `<svg width="48" height="48" viewBox="0 0 2500 2500" xmlns="http://www.w3.org/2000/svg"><rect fill="none" width="2500" height="2500"/><path fill="#2354E6" fill-rule="evenodd" clip-rule="evenodd" d="M1250 1937.5c-379.7 0-687.5-307.8-687.5-687.5 0-379.7 307.8-687.5 687.5-687.5V0C559.6 0 0 559.6 0 1250c0 690.3 559.6 1250 1250 1250 690.3 0 1250-559.6 1250-1250h-562.5c0 379.7-307.8 687.5-687.5 687.5z"/><polygon fill="#17E6A1" fill-rule="evenodd" clip-rule="evenodd" points="1250,1250 1937.5,1250 1937.5,562.5 1250,562.5"/></svg>`;
 
 const bitgetSvg = `<svg width="48" height="48" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" rx="8.71" fill="#00f0ff"/><path d="M18.46 15.77h7.47l7.64 7.59c.5.49.5 1.3.01 1.79L23.78 35h-7.69l2.33-2.26 8.54-8.49-8.43-8.49z" fill="#1b1b1b"/><path d="M21.53 24.23h-7.47l-7.64-7.59a1.27 1.27 0 01-.01-1.79L16.21 5h7.69l-2.33 2.26-8.54 8.49 8.43 8.49z" fill="#1b1b1b"/></svg>`;
-
 
 
 // 交易所跳转映射
@@ -32,6 +33,10 @@ const exchangeMap = {
     China: process.env.BITGET_URL_CN,
     default: process.env.BITGET_URL_DEFAULT,
   },
+  okx: {
+    China: process.env.OKX_URL_CN,
+    default: process.env.OKX_URL_DEFAULT,
+  }
 };
 
 // 静态文件路由
@@ -85,6 +90,7 @@ async function detectCountry(req) {
 function getExchangeIcon(exchange) {
   switch(exchange) {
     case 'binance': return binanceSvg;
+    case 'okx': return okxSvg;
     case 'gateio': return gateioSvg;
     case 'bitget': return bitgetSvg;
     default: return '';
@@ -266,6 +272,13 @@ function renderHomePage(t, lang, host) {
         <button>${t.button}</button>
       </div>
     </a>
+    <a class="card-link" href="/to/okx?lang=${lang}">
+      <div class="card">
+        ${okxSvg}
+        <h3>OKX</h3>
+        <button>${t.button}</button>
+      </div>
+    </a>
     <a class="card-link" href="/to/gateio?lang=${lang}">
       <div class="card">
         <div class="badge">${t.badge}</div>
@@ -286,11 +299,11 @@ function renderHomePage(t, lang, host) {
   <footer>
     <p>&copy; ${new Date().getFullYear()} Crypto Jump Service. ${lang === "zh" ? "保留所有权利。" : "All rights reserved."}</p>
     <p>
-      <a href="https://t.me/xiangjiaogev" target="_blank">
+      <a href="https://t.me/CryptoCoinPriceAlertMsg" target="_blank">
         ${lang === "zh" ? "加入 Telegram 社区" : "Join Telegram Community"}
       </a>
       &nbsp;|&nbsp;
-      <a href="https://x.com/xiangjiaogev" target="_blank">
+      <a href="https://x.com/SvipKu" target="_blank">
         ${lang === "zh" ? "联系我" : "Contact me"}
       </a>
     </p>
@@ -347,7 +360,7 @@ function renderExchangePage(exchange, lang, host, country) {
   
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-JY2H2Y4LX2"> Google Ads</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JY2H2Y4LX2"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -465,12 +478,14 @@ User-agent: *
 Allow: /$
 Allow: /to/
 Disallow: /binance
+Disallow: /okx
 Disallow: /gateio
 Disallow: /bitget
 
 # 特别为Googlebot设置
 User-agent: Googlebot
 Allow: /to/binance
+Allow: /to/okx
 Allow: /to/gateio
 Allow: /to/bitget
 
@@ -484,6 +499,7 @@ app.get("/sitemap.xml", (req, res) => {
   const urls = [
     "",
     "to/binance",
+    "to/okx",
     "to/gateio",
     "to/bitget",
   ];
